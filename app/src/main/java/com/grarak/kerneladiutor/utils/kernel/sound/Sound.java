@@ -35,8 +35,8 @@ import java.util.List;
 public class Sound {
 
     private static final String SOUND_CONTROL_ENABLE = "/sys/module/snd_soc_wcd9320/parameters/enable_fs";
-    private static final String HIGHPERF_MODE_ENABLE = "/sys/devices/virtual/misc/soundcontrol/highperf_enabled";
-    private static final String PDESIREAUDIO_ENABLE = "/sys/module/snd_soc_wcd9330/parameters/uhqa_mode_pdesireaudio";
+    private static final String HIGHPERF_MODE_ENABLE = "/sys/module/snd_soc_msm8x16_wcd/parameters/high_perf_mode";
+    private static final String PDESIREAUDIO_ENABLE = "/sys/module/snd_soc_msm8x16_wcd/parameters/uhqa_mode_pdesireaudio";
     private static final String HEADPHONE_GAIN = "/sys/kernel/sound_control_3/gpl_headphone_gain";
     private static final String HANDSET_MICROPHONE_GAIN = "/sys/kernel/sound_control_3/gpl_mic_gain";
     private static final String CAM_MICROPHONE_GAIN = "/sys/kernel/sound_control_3/gpl_cam_mic_gain";
