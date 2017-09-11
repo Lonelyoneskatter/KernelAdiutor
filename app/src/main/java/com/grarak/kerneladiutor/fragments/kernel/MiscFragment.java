@@ -26,6 +26,7 @@ import com.grarak.kerneladiutor.R;
 import com.grarak.kerneladiutor.fragments.ApplyOnBootFragment;
 import com.grarak.kerneladiutor.fragments.RecyclerViewFragment;
 import com.grarak.kerneladiutor.utils.kernel.misc.Misc;
+import com.grarak.kerneladiutor.utils.Utils;
 import com.grarak.kerneladiutor.utils.kernel.misc.PowerSuspend;
 import com.grarak.kerneladiutor.utils.kernel.misc.StateNotifier;
 import com.grarak.kerneladiutor.utils.kernel.misc.Vibration;
@@ -226,11 +227,19 @@ public class MiscFragment extends RecyclerViewFragment {
 
 
     private void powersuspendInit(List<RecyclerViewItem> items) {
+        CardView ps = new CardView(getActivity());
+        ps.setTitle(getString(R.string.power_suspend));
+
         if (PowerSuspend.hasMode()) {
+            String v = PowerSuspend.getVersion();
             SelectView mode = new SelectView();
             mode.setTitle(getString(R.string.power_suspend_mode));
             mode.setSummary(getString(R.string.power_suspend_mode_summary));
-            mode.setItems(Arrays.asList(getResources().getStringArray(R.array.powersuspend_items)));
+            if (v.contains("1.5") || v.contains("1.8")) {
+                mode.setItems(Arrays.asList(getResources().getStringArray(R.array.powersuspend_items)));
+            } else {
+                mode.setItems(Arrays.asList(getResources().getStringArray(R.array.powersuspend_items_lite)));
+            }
             mode.setItem(PowerSuspend.getMode());
             mode.setOnItemSelected(new SelectView.OnItemSelected() {
                 @Override
@@ -239,11 +248,11 @@ public class MiscFragment extends RecyclerViewFragment {
                 }
             });
 
-            items.add(mode);
+            ps.addItem(mode);
         }
 
         if (PowerSuspend.hasOldState()) {
-            SwitchView state = new SwitchView();
+            final SwitchView state = new SwitchView();
             state.setTitle(getString(R.string.power_suspend_state));
             state.setSummary(getString(R.string.power_suspend_state_summary));
             state.setChecked(PowerSuspend.isOldStateEnabled());
@@ -251,10 +260,20 @@ public class MiscFragment extends RecyclerViewFragment {
                 @Override
                 public void onChanged(SwitchView switchView, boolean isChecked) {
                     PowerSuspend.enableOldState(isChecked, getActivity());
+                    getHandler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            int mode = PowerSuspend.getMode();
+                            boolean st = PowerSuspend.isOldStateEnabled();
+                            state.setChecked(st);
+                            if (!st && mode != 1) Utils.toast(getString(R.string.power_suspend_state_toast),
+                                    getActivity());
+                        }
+                    }, 200);
                 }
             });
 
-            items.add(state);
+            ps.addItem(state);
         }
 
         if (PowerSuspend.hasNewState()) {
@@ -274,7 +293,11 @@ public class MiscFragment extends RecyclerViewFragment {
                 }
             });
 
-            items.add(state);
+            ps.addItem(state);
+        }
+
+        if (ps.size() > 0) {
+            items.add(ps);
         }
     }
 
