@@ -38,6 +38,7 @@ public class Misc {
     private static final String DYNAMIC_FSYNC = "/sys/kernel/dyn_fsync/Dyn_fsync_active";
     private static final String GENTLE_FAIR_SLEEPERS = "/sys/kernel/sched/gentle_fair_sleepers";
     private static final String ARCH_POWER = "/sys/kernel/sched/arch_power";
+    private static final String DROP_CACHES = "/sys/module/drop_caches/parameters/drop_caches";
     private static final String TCP_AVAILABLE_CONGESTIONS = "/proc/sys/net/ipv4/tcp_available_congestion_control";
     private static final String HOSTNAME_KEY = "net.hostname";
 
@@ -92,6 +93,18 @@ public class Misc {
 
     public static boolean hasArchPower() {
         return Utils.existFile(ARCH_POWER);
+    }
+
+    public static void enableDropCaches(boolean enable, Context context) {
+        run(Control.write(enable ? "Y" : "N", DROP_CACHES), DROP_CACHES, context);
+    }
+
+    public static boolean isDropCachesEnabled() {
+        return Utils.readFile(DROP_CACHES).equals("Y");
+    }
+
+    public static boolean hasDropCaches() {
+        return Utils.existFile(DROP_CACHES);
     }
 
     public static void enableGentleFairSleepers(boolean enable, Context context) {

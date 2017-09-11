@@ -71,6 +71,9 @@ public class MiscFragment extends RecyclerViewFragment {
         if (Misc.hasArchPower()) {
             archPowerInit(items);
         }
+        if (Misc.hasDropCaches()) {
+            dropCachesInit(items);
+        }
         if (PowerSuspend.supported()) {
             powersuspendInit(items);
         }
@@ -201,6 +204,22 @@ public class MiscFragment extends RecyclerViewFragment {
 
         items.add(archPower);
     }
+
+    private void dropCachesInit(List<RecyclerViewItem> items) {
+        SwitchView dropCaches = new SwitchView();
+        dropCaches.setTitle(getString(R.string.drop_caches));
+        dropCaches.setSummary(getString(R.string.drop_caches_summary));
+        dropCaches.setChecked(Misc.isDropCachesEnabled());
+        dropCaches.addOnSwitchListener(new SwitchView.OnSwitchListener() {
+            @Override
+            public void onChanged(SwitchView switchView, boolean isChecked) {
+                Misc.enableDropCaches(isChecked, getActivity());
+            }
+        });
+
+        items.add(dropCaches);
+    }
+
 
     private void powersuspendInit(List<RecyclerViewItem> items) {
         if (PowerSuspend.hasMode()) {
