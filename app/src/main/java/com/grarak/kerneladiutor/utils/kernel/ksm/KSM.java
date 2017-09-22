@@ -47,6 +47,7 @@ public class KSM {
     private static final String PAGES_TO_SCAN = "/pages_to_scan";
     private static final String SLEEP_MILLISECONDS = "/sleep_millisecs";
     private static final String MAX_CPU_PERCENTAGE = UKSM + "/max_cpu_percentage";
+    private static final String CPU_GOVERNOR = UKSM + "/cpu_governor";
 
     private static final List<String> sParent = new ArrayList<>();
     private static final LinkedHashMap<String, Integer> sInfos = new LinkedHashMap<>();
@@ -63,6 +64,37 @@ public class KSM {
     }
 
     private static String PARENT;
+
+    public static boolean isUKSM(){
+        return Utils.existFile(UKSM);
+    }
+
+    public static boolean hasCpuGovernor(){
+        return Utils.existFile(CPU_GOVERNOR);
+    }
+
+    public static void setCpuGovernor(String value, Context context){
+        run(Control.write(String.valueOf(value), CPU_GOVERNOR), CPU_GOVERNOR, context);
+    }
+
+    public static String getCpuGovernor() {
+        String[] governors = Utils.readFile(CPU_GOVERNOR).split(" ");
+        for (String governor : governors) {
+            if (governor.startsWith("[") && governor.endsWith("]")) {
+                return governor.replace("[", "").replace("]", "");
+            }
+        }
+        return "";
+    }
+
+    public static List<String> getCpuGovernors() {
+        String[] governors = Utils.readFile(CPU_GOVERNOR).split(" ");
+        List<String> list = new ArrayList<>();
+        for (String governor : governors) {
+            list.add(governor.replace("[", "").replace("]", ""));
+        }
+        return list;
+    }
 
     public static void setMaxCpuPercentage(int value, Context context) {
         run(Control.write(String.valueOf(value), MAX_CPU_PERCENTAGE), MAX_CPU_PERCENTAGE, context);
