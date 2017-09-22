@@ -28,6 +28,7 @@ import com.grarak.kerneladiutor.utils.kernel.cpuhotplug.AiOHotplug;
 import com.grarak.kerneladiutor.utils.kernel.cpuhotplug.AlucardHotplug;
 import com.grarak.kerneladiutor.utils.kernel.cpuhotplug.AutoSmp;
 import com.grarak.kerneladiutor.utils.kernel.cpuhotplug.BluPlug;
+import com.grarak.kerneladiutor.utils.kernel.cpuhotplug.DynHotplug;
 import com.grarak.kerneladiutor.utils.kernel.cpuhotplug.CoreCtl;
 import com.grarak.kerneladiutor.utils.kernel.cpuhotplug.IntelliPlug;
 import com.grarak.kerneladiutor.utils.kernel.cpuhotplug.LazyPlug;
@@ -78,6 +79,9 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
         }
         if (BluPlug.supported()) {
             bluPlugInit(items);
+        }
+        if (DynHotplug.supported()) {
+            dynHotplugInit(items);
         }
         if (MSMHotplug.supported()) {
             msmHotplugInit(items);
@@ -816,6 +820,147 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
         if (bluplug.size() > 0) {
             items.add(title);
             items.addAll(bluplug);
+        }
+    }
+
+    private void dynHotplugInit(List<RecyclerViewItem> items) {
+        final List<RecyclerViewItem> dynhotplug = new ArrayList<>();
+
+        TitleView title = new TitleView();
+        title.setText(getString(R.string.dyn_hotplug));
+
+        if (DynHotplug.hasDynHotplugEnable()) {
+            SwitchView enable = new SwitchView();
+            enable.setTitle(getString(R.string.dyn_hotplug));
+            enable.setSummary(getString(R.string.dyn_hotplug_summary));
+            enable.setChecked(DynHotplug.isDynHotplugEnabled());
+            enable.addOnSwitchListener(new SwitchView.OnSwitchListener() {
+                @Override
+                public void onChanged(SwitchView switchView, boolean isChecked) {
+                    DynHotplug.enableDynHotplug(isChecked, getActivity());
+                }
+            });
+
+            dynhotplug.add(enable);
+            mEnableViews.add(enable);
+        }
+
+        if (DynHotplug.hasDynHotplugMinOnline()) {
+            SeekBarView minOnline = new SeekBarView();
+            minOnline.setTitle(getString(R.string.min_cpu_online));
+            minOnline.setSummary(getString(R.string.min_cpu_online_summary));
+            minOnline.setMax(CPUFreq.getCpuCount());
+            minOnline.setMin(1);
+            minOnline.setProgress(DynHotplug.getDynHotplugMinOnline() - 1);
+            minOnline.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    DynHotplug.setDynHotplugMinOnline(position + 1, getActivity());
+                }
+            });
+
+            dynhotplug.add(minOnline);
+        }
+
+        if (DynHotplug.hasDynHotplugMaxOnline()) {
+            SeekBarView maxOnline = new SeekBarView();
+            maxOnline.setTitle(getString(R.string.max_cpu_online));
+            maxOnline.setSummary(getString(R.string.max_cpu_online_summary));
+            maxOnline.setMax(CPUFreq.getCpuCount());
+            maxOnline.setMin(1);
+            maxOnline.setProgress(DynHotplug.getDynHotplugMaxOnline() - 1);
+            maxOnline.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    DynHotplug.setDynHotplugMaxOnline(position + 1, getActivity());
+                }
+            });
+
+            dynhotplug.add(maxOnline);
+        }
+
+        if (DynHotplug.hasDynHotplugUpThreshold()) {
+            SeekBarView upThreshold = new SeekBarView();
+            upThreshold.setTitle(getString(R.string.up_threshold));
+            upThreshold.setSummary(getString(R.string.up_threshold_summary));
+            upThreshold.setUnit("%");
+            upThreshold.setMax(100);
+            upThreshold.setProgress(DynHotplug.getDynHotplugUpThreshold());
+            upThreshold.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    DynHotplug.setDynHotplugUpThreshold(position, getActivity());
+                }
+            });
+
+            dynhotplug.add(upThreshold);
+        }
+
+        if (DynHotplug.hasDynHotplugUpTimerCnt()) {
+            List<String> list = new ArrayList<>();
+            for (float i = 0; i < 21; i++) {
+                list.add(String.valueOf(i * 0.5f));
+            }
+
+            SeekBarView upTimerCnt = new SeekBarView();
+            upTimerCnt.setTitle(getString(R.string.up_timer_cnt));
+            upTimerCnt.setSummary(getString(R.string.up_timer_cnt_summary));
+            upTimerCnt.setItems(list);
+            upTimerCnt.setProgress(DynHotplug.getDynHotplugUpTimerCnt());
+            upTimerCnt.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    DynHotplug.setDynHotplugUpTimerCnt(position, getActivity());
+                }
+            });
+
+            dynhotplug.add(upTimerCnt);
+        }
+
+        if (DynHotplug.hasDynHotplugDownTimerCnt()) {
+            List<String> list = new ArrayList<>();
+            for (float i = 0; i < 21; i++) {
+                list.add(String.valueOf(i * 0.5f));
+            }
+
+            SeekBarView downTimerCnt = new SeekBarView();
+            downTimerCnt.setTitle(getString(R.string.down_timer_cnt));
+            downTimerCnt.setSummary(getString(R.string.down_timer_cnt_summary));
+            downTimerCnt.setItems(list);
+            downTimerCnt.setProgress(DynHotplug.getDynHotplugDownTimerCnt());
+            downTimerCnt.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    DynHotplug.setDynHotplugDownTimerCnt(position, getActivity());
+                }
+            });
+
+            dynhotplug.add(downTimerCnt);
+        }
+
+        if (dynhotplug.size() > 0) {
+            items.add(title);
+            items.addAll(dynhotplug);
         }
     }
 
