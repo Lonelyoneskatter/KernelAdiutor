@@ -38,6 +38,7 @@ public class Misc {
     private static final String CPU_WQ_POWER_SAVING = "/sys/module/workqueue/parameters/power_efficient";
     private static final String CPU_AVAILABLE_CFS_SCHEDULERS = "/sys/devices/system/cpu/sched_balance_policy/available_sched_balance_policy";
     private static final String CPU_CURRENT_CFS_SCHEDULER = "/sys/devices/system/cpu/sched_balance_policy/current_sched_balance_policy";
+    private static final String ACPUCLOCK_BOOST = "/sys/module/acpuclock_krait/parameters/boost";
 
     private static final String CPU_QUIET = "/sys/devices/system/cpu/cpuquiet";
     private static final String CPU_QUIET_ENABLE = CPU_QUIET + "/cpuquiet_driver/enabled";
@@ -133,6 +134,19 @@ public class Misc {
 
     public static boolean hasPowerSavingWq() {
         return Utils.existFile(CPU_WQ_POWER_SAVING);
+    }
+
+    public static void enableAcpuclockBoost(boolean enabled, Context context) {
+        run(Control.chmod("644", ACPUCLOCK_BOOST), ACPUCLOCK_BOOST + "chmod", context);
+        run(Control.write(enabled ? "Y" : "N", ACPUCLOCK_BOOST), ACPUCLOCK_BOOST, context);
+    }
+
+    public static boolean isAcpuclockBoostEnabled() {
+        return Utils.readFile(ACPUCLOCK_BOOST).equals("Y");
+    }
+
+    public static boolean hasAcpuclockBoost() {
+        return Utils.existFile(ACPUCLOCK_BOOST);
     }
 
     public static void setMcPowerSaving(int value, Context context) {

@@ -114,6 +114,9 @@ public class CPUFragment extends RecyclerViewFragment {
         if (Misc.hasPowerSavingWq()) {
             powerSavingWqInit(items);
         }
+        if (Misc.hasAcpuclockBoost()) {
+            acpuclockBoostInit(items);
+        }
         if (Misc.hasCFSScheduler()) {
             cfsSchedulerInit(items);
         }
@@ -365,6 +368,21 @@ public class CPUFragment extends RecyclerViewFragment {
         });
 
         items.add(powerSavingWq);
+    }
+
+    private void acpuclockBoostInit(List<RecyclerViewItem> items) {
+        SwitchView acpuclockBoost = new SwitchView();
+        acpuclockBoost.setTitle(getString(R.string.acpuclock_boost));
+        acpuclockBoost.setSummary(getString(R.string.acpuclock_boost_summary));
+        acpuclockBoost.setChecked(Misc.isAcpuclockBoostEnabled());
+        acpuclockBoost.addOnSwitchListener(new SwitchView.OnSwitchListener() {
+            @Override
+            public void onChanged(SwitchView switchView, boolean isChecked) {
+                Misc.enableAcpuclockBoost(isChecked, getActivity());
+            }
+        });
+
+        items.add(acpuclockBoost);
     }
 
     private void cfsSchedulerInit(List<RecyclerViewItem> items) {
