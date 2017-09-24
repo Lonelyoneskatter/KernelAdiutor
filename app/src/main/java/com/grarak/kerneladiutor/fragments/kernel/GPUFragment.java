@@ -26,6 +26,7 @@ import com.grarak.kerneladiutor.fragments.RecyclerViewFragment;
 import com.grarak.kerneladiutor.utils.kernel.gpu.AdrenoIdler;
 import com.grarak.kerneladiutor.utils.kernel.gpu.GPUFreq;
 import com.grarak.kerneladiutor.utils.kernel.gpu.SimpleGPU;
+import com.grarak.kerneladiutor.utils.kernel.gpu.TieredGPU;
 import com.grarak.kerneladiutor.views.recyclerview.CardView;
 import com.grarak.kerneladiutor.views.recyclerview.DescriptionView;
 import com.grarak.kerneladiutor.views.recyclerview.RecyclerViewItem;
@@ -66,6 +67,9 @@ public class GPUFragment extends RecyclerViewFragment {
         governorInit(items);
         if (SimpleGPU.supported()) {
             simpleGpuInit(items);
+        }
+        if (TieredGPU.supported()) {
+            tieredGpuInit(items);
         }
         if (AdrenoIdler.supported()) {
             adrenoIdlerInit(items);
@@ -257,6 +261,67 @@ public class GPUFragment extends RecyclerViewFragment {
         if (simpleGpu.size() > 0) {
             items.add(title);
             items.addAll(simpleGpu);
+        }
+    }
+
+    private void tieredGpuInit(List<RecyclerViewItem> items) {
+        List<RecyclerViewItem> tieredGpu = new ArrayList<>();
+        TitleView title = new TitleView();
+        title.setText(getString(R.string.tiered_gpu_governor));
+
+        if (TieredGPU.hasTieredGpuEnable()) {
+            SwitchView enable = new SwitchView();
+            enable.setTitle(getString(R.string.tiered_gpu_governor));
+            enable.setSummary(getString(R.string.tiered_gpu_governor_summary));
+            enable.setChecked(TieredGPU.isTieredGpuEnabled());
+            enable.addOnSwitchListener(new SwitchView.OnSwitchListener() {
+                @Override
+                public void onChanged(SwitchView switchView, boolean isChecked) {
+                    TieredGPU.enableTieredGpu(isChecked, getActivity());
+                }
+            });
+
+            tieredGpu.add(enable);
+        }
+
+        if (TieredGPU.hasTieredEfficiencyModeEnable()) {
+            SwitchView enable = new SwitchView();
+            enable.setTitle(getString(R.string.tiered_efficiency_mode));
+            enable.setSummary(getString(R.string.tiered_efficiency_mode_summary));
+            enable.setChecked(TieredGPU.isTieredEfficiencyModeEnabled());
+            enable.addOnSwitchListener(new SwitchView.OnSwitchListener() {
+                @Override
+                public void onChanged(SwitchView switchView, boolean isChecked) {
+                    TieredGPU.enableTieredEfficiencyMode(isChecked, getActivity());
+                }
+            });
+
+            tieredGpu.add(enable);
+        }
+
+        if (TieredGPU.hasTieredGpuSampleTime()) {
+            SeekBarView sampleTime = new SeekBarView();
+            sampleTime.setTitle(getString(R.string.tiered_sample_time));
+            sampleTime.setSummary(getString(R.string.tiered_sample_time_summary));
+            sampleTime.setMax(100);
+            sampleTime.setProgress(TieredGPU.getTieredGpuSampleTime());
+            sampleTime.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    TieredGPU.setTieredGpuSampleTime(position, getActivity());
+                }
+            });
+
+            tieredGpu.add(sampleTime);
+        }
+
+        if (tieredGpu.size() > 0) {
+            items.add(title);
+            items.addAll(tieredGpu);
         }
     }
 
