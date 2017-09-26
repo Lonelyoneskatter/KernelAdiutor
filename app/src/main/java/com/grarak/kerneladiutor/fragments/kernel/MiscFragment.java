@@ -27,6 +27,7 @@ import com.grarak.kerneladiutor.fragments.ApplyOnBootFragment;
 import com.grarak.kerneladiutor.fragments.RecyclerViewFragment;
 import com.grarak.kerneladiutor.utils.kernel.misc.Misc;
 import com.grarak.kerneladiutor.utils.kernel.misc.PowerSuspend;
+import com.grarak.kerneladiutor.utils.kernel.misc.StateNotifier;
 import com.grarak.kerneladiutor.utils.kernel.misc.Vibration;
 import com.grarak.kerneladiutor.utils.kernel.misc.Wakelocks;
 import com.grarak.kerneladiutor.views.recyclerview.CardView;
@@ -76,6 +77,9 @@ public class MiscFragment extends RecyclerViewFragment {
         }
         if (PowerSuspend.supported()) {
             powersuspendInit(items);
+        }
+        if (StateNotifier.supported()) {
+            stateNotifierInit(items);
         }
         networkInit(items);
         wakelockInit(items);
@@ -272,6 +276,21 @@ public class MiscFragment extends RecyclerViewFragment {
 
             items.add(state);
         }
+    }
+
+    private void stateNotifierInit(List<RecyclerViewItem> items) {
+        SwitchView stateNotifier = new SwitchView();
+        stateNotifier.setTitle(getString(R.string.state_notifier));
+        stateNotifier.setSummary(getString(StateNotifier.isStateNotifierEnabled() ? R.string.state_notifier_summary_enabled : R.string.state_notifier_summary_disabled));
+        stateNotifier.setChecked(StateNotifier.isStateNotifierEnabled());
+        stateNotifier.addOnSwitchListener(new SwitchView.OnSwitchListener() {
+            @Override
+            public void onChanged(SwitchView switchView, boolean isChecked) {
+                StateNotifier.enableStateNotifier(isChecked, getActivity());
+            }
+        });
+
+        items.add(stateNotifier);
     }
 
     private void networkInit(List<RecyclerViewItem> items) {
