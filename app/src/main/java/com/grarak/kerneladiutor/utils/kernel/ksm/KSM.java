@@ -46,7 +46,7 @@ public class KSM {
     private static final String DEFERRED_TIMER = "/deferred_timer";
     private static final String PAGES_TO_SCAN = "/pages_to_scan";
     private static final String SLEEP_MILLISECONDS = "/sleep_millisecs";
-    private static final String MAX_CPU_PERCENTAGE = "/max_cpu_percentage";
+    private static final String MAX_CPU_PERCENTAGE = UKSM + "/max_cpu_percentage";
 
     private static final List<String> sParent = new ArrayList<>();
     private static final LinkedHashMap<String, Integer> sInfos = new LinkedHashMap<>();
