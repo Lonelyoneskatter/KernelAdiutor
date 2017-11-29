@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class GPUFreq {
 
-    private static final String GENERIC_GOVERNORS = "performance powersave ondemand simple conservative";
+    private static final String GENERIC_GOVERNORS = "performance powersave ondemand simple conservative interactive";
 
     private static final String CUR_KGSL2D0_QCOM_FREQ = "/sys/devices/platform/kgsl-2d0.0/kgsl/kgsl-2d0/gpuclk";
     private static final String MAX_KGSL2D0_QCOM_FREQ = "/sys/devices/platform/kgsl-2d0.0/kgsl/kgsl-2d0/max_gpuclk";
