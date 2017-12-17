@@ -116,6 +116,7 @@ public class Wakelocks {
                 R.string.wlan_wakelock, R.string.wlan_wakelock_summary));
         sWakelocks.add(new Wakelock("/sys/module/wakeup/parameters/enable_bluesleep_ws",
                 R.string.bluesleep_wakelock, R.string.bluesleep_wakelock_summary));
+        sWakelocks.add(new Wakelock("/sys/module/wakeup/parameters/enable_rilj"));
         sWakelocks.add(new Wakelock("/sys/module/wakeup/parameters/enable_ipa_ws"));
         sWakelocks.add(new Wakelock("/sys/module/wakeup/parameters/enable_netlink_ws"));
         sWakelocks.add(new Wakelock("/sys/module/wakeup/parameters/enable_qcom_rx_wakelock_ws"));
