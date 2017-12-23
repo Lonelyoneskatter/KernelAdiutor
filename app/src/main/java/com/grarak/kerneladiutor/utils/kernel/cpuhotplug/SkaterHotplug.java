@@ -44,6 +44,7 @@ public class SkaterHotplug {
     private static final String SKATER_HOTPLUG_MAX_CPUS = SKATER_HOTPLUG + "/max_cpus";
     private static final String SKATER_HOTPLUG_MIN_BOOST_FREQ = SKATER_HOTPLUG + "/min_boost_freq";
     private static final String SKATER_HOTPLUG_MIN_CPUS = SKATER_HOTPLUG + "/min_cpus";
+    private static final String SKATER_HOTPLUG_MAX_CPUS_SCROFF = SKATER_HOTPLUG + "/max_cpus_scroff";
 
     public static void setSkaterHotplugMinCpus(int value, Context context) {
         run(Control.write(String.valueOf(value), SKATER_HOTPLUG_MIN_CPUS),
@@ -172,6 +173,18 @@ public class SkaterHotplug {
 
     public static boolean hasSkaterHotplugCpusBoosted() {
         return Utils.existFile(SKATER_HOTPLUG_CPUS_BOOSTED);
+    }
+
+    public static void maxCpusScroffSkaterHotplug(boolean enable, Context context) {
+        run(Control.write(enable ? "1" : "0", SKATER_HOTPLUG_MAX_CPUS_SCROFF), SKATER_HOTPLUG_MAX_CPUS_SCROFF, context);
+    }
+
+    public static boolean isSkaterHotplugMaxCpusScroff() {
+        return Utils.readFile(SKATER_HOTPLUG_MAX_CPUS_SCROFF).equals("1");
+    }
+
+    public static boolean hasSkaterHotplugMaxCpusScroff() {
+        return Utils.existFile(SKATER_HOTPLUG_MAX_CPUS_SCROFF);
     }
 
     public static void enableSkaterHotplug(boolean enable, Context context) {

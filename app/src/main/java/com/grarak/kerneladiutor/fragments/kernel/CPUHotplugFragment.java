@@ -2120,6 +2120,22 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
             skaterHotplug.add(minCpus);
         }
 
+        if (SkaterHotplug.hasSkaterHotplugMaxCpusScroff()) {
+            SwitchView maxCpusScroff = new SwitchView();
+            maxCpusScroff.setTitle(getString(R.string.screen_off_single_cpu));
+            maxCpusScroff.setSummary(getString(R.string.screen_off_single_cpu_summary));
+            maxCpusScroff.setChecked(SkaterHotplug.isSkaterHotplugMaxCpusScroff());
+            maxCpusScroff.addOnSwitchListener(new SwitchView.OnSwitchListener() {
+                @Override
+                public void onChanged(SwitchView switchView, boolean isChecked) {
+                    SkaterHotplug.maxCpusScroffSkaterHotplug(isChecked, getActivity());
+                }
+            });
+
+            skaterHotplug.add(maxCpusScroff);
+            mEnableViews.add(maxCpusScroff);
+        }
+
         if (SkaterHotplug.hasSkaterHotplugMinBoostFreq() && CPUFreq.getFreqs() != null) {
             SelectView minBoostFreq = new SelectView();
             minBoostFreq.setTitle(getString(R.string.min_boost_freq));
