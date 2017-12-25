@@ -1979,84 +1979,6 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
             mEnableViews.add(enable);
         }
 
-        if (SkaterHotplug.hasSkaterHotplugCpufreqDown()) {
-            SeekBarView cpuFreqDown = new SeekBarView();
-            cpuFreqDown.setTitle(getString(R.string.downrate_limits));
-            cpuFreqDown.setUnit("%");
-            cpuFreqDown.setProgress(SkaterHotplug.getSkaterHotplugCpufreqDown());
-            cpuFreqDown.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
-                @Override
-                public void onMove(SeekBarView seekBarView, int position, String value) {
-                }
-
-                @Override
-                public void onStop(SeekBarView seekBarView, int position, String value) {
-                    SkaterHotplug.setSkaterHotplugCpufreqDown(position, getActivity());
-                }
-            });
-
-            skaterHotplug.add(cpuFreqDown);
-        }
-
-        if (SkaterHotplug.hasSkaterHotplugCpufreqUp()) {
-            SeekBarView cpuFreqUp = new SeekBarView();
-            cpuFreqUp.setTitle(getString(R.string.uprate_limits));
-            cpuFreqUp.setUnit("%");
-            cpuFreqUp.setProgress(SkaterHotplug.getSkaterHotplugCpufreqUp());
-            cpuFreqUp.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
-                @Override
-                public void onMove(SeekBarView seekBarView, int position, String value) {
-                }
-
-                @Override
-                public void onStop(SeekBarView seekBarView, int position, String value) {
-                    SkaterHotplug.setSkaterHotplugCpufreqUp(position, getActivity());
-                }
-            });
-
-            skaterHotplug.add(cpuFreqUp);
-        }
-
-        if (SkaterHotplug.hasSkaterHotplugCycleDown()) {
-            SeekBarView cycleDown = new SeekBarView();
-            cycleDown.setTitle(getString(R.string.cycle_down));
-            cycleDown.setSummary(getString(R.string.cycle_down_summary));
-            cycleDown.setMax(CPUFreq.getCpuCount());
-            cycleDown.setProgress(SkaterHotplug.getSkaterHotplugCycleDown());
-            cycleDown.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
-                @Override
-                public void onMove(SeekBarView seekBarView, int position, String value) {
-                }
-
-                @Override
-                public void onStop(SeekBarView seekBarView, int position, String value) {
-                    SkaterHotplug.setSkaterHotplugCycleDown(position, getActivity());
-                }
-            });
-
-            skaterHotplug.add(cycleDown);
-        }
-
-        if (SkaterHotplug.hasSkaterHotplugCycleUp()) {
-            SeekBarView cycleUp = new SeekBarView();
-            cycleUp.setTitle(getString(R.string.cycle_up));
-            cycleUp.setSummary(getString(R.string.cycle_up_summary));
-            cycleUp.setMax(CPUFreq.getCpuCount());
-            cycleUp.setProgress(SkaterHotplug.getSkaterHotplugCycleUp());
-            cycleUp.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
-                @Override
-                public void onMove(SeekBarView seekBarView, int position, String value) {
-                }
-
-                @Override
-                public void onStop(SeekBarView seekBarView, int position, String value) {
-                    SkaterHotplug.setSkaterHotplugCycleUp(position, getActivity());
-                }
-            });
-
-            skaterHotplug.add(cycleUp);
-        }
-
         if (SkaterHotplug.hasSkaterHotplugDelay()) {
             SeekBarView delay = new SeekBarView();
             delay.setTitle(getString(R.string.delay));
@@ -2134,6 +2056,84 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
 
             skaterHotplug.add(maxCpusScroff);
             mEnableViews.add(maxCpusScroff);
+        }
+
+        if (SkaterHotplug.hasSkaterHotplugCpufreqDown()) {
+            SeekBarView cpuFreqDown = new SeekBarView();
+            cpuFreqDown.setTitle(getString(R.string.downrate_limits));
+            cpuFreqDown.setUnit("%");
+            cpuFreqDown.setProgress(SkaterHotplug.getSkaterHotplugCpufreqDown());
+            cpuFreqDown.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    SkaterHotplug.setSkaterHotplugCpufreqDown(position, getActivity());
+                }
+            });
+
+            skaterHotplug.add(cpuFreqDown);
+        }
+
+        if (SkaterHotplug.hasSkaterHotplugCpufreqUp()) {
+            SeekBarView cpuFreqUp = new SeekBarView();
+            cpuFreqUp.setTitle(getString(R.string.uprate_limits));
+            cpuFreqUp.setUnit("%");
+            cpuFreqUp.setProgress(SkaterHotplug.getSkaterHotplugCpufreqUp());
+            cpuFreqUp.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    SkaterHotplug.setSkaterHotplugCpufreqUp(position, getActivity());
+                }
+            });
+
+            skaterHotplug.add(cpuFreqUp);
+        }
+
+        if (SkaterHotplug.hasSkaterHotplugCycleDown()) {
+            SeekBarView cycleDown = new SeekBarView();
+            cycleDown.setTitle(getString(R.string.cycle_down));
+            cycleDown.setSummary(getString(R.string.cycle_down_summary));
+            cycleDown.setMax(CPUFreq.getCpuCount());
+            cycleDown.setProgress(SkaterHotplug.getSkaterHotplugCycleDown());
+            cycleDown.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    SkaterHotplug.setSkaterHotplugCycleDown(position, getActivity());
+                }
+            });
+
+            skaterHotplug.add(cycleDown);
+        }
+
+        if (SkaterHotplug.hasSkaterHotplugCycleUp()) {
+            SeekBarView cycleUp = new SeekBarView();
+            cycleUp.setTitle(getString(R.string.cycle_up));
+            cycleUp.setSummary(getString(R.string.cycle_up_summary));
+            cycleUp.setMax(CPUFreq.getCpuCount());
+            cycleUp.setProgress(SkaterHotplug.getSkaterHotplugCycleUp());
+            cycleUp.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    SkaterHotplug.setSkaterHotplugCycleUp(position, getActivity());
+                }
+            });
+
+            skaterHotplug.add(cycleUp);
         }
 
         if (SkaterHotplug.hasSkaterHotplugMinBoostFreq() && CPUFreq.getFreqs() != null) {
