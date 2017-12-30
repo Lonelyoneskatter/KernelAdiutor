@@ -199,9 +199,8 @@ public class GPUFragment extends RecyclerViewFragment {
     }
 
     private void simpleGpuInit(List<RecyclerViewItem> items) {
-        List<RecyclerViewItem> simpleGpu = new ArrayList<>();
-        TitleView title = new TitleView();
-        title.setText(getString(R.string.simple_gpu_algorithm));
+        CardView simpleGpu = new CardView(getActivity());
+        simpleGpu.setTitle(getString(R.string.simple_gpu_algorithm));
 
         if (SimpleGPU.hasSimpleGpuEnable()) {
             SwitchView enable = new SwitchView();
@@ -215,7 +214,7 @@ public class GPUFragment extends RecyclerViewFragment {
                 }
             });
 
-            simpleGpu.add(enable);
+            simpleGpu.addItem(enable);
         }
 
         if (SimpleGPU.hasSimpleGpuLaziness()) {
@@ -235,7 +234,7 @@ public class GPUFragment extends RecyclerViewFragment {
                 }
             });
 
-            simpleGpu.add(laziness);
+            simpleGpu.addItem(laziness);
         }
 
         if (SimpleGPU.hasSimpleGpuRampThreshold()) {
@@ -255,19 +254,17 @@ public class GPUFragment extends RecyclerViewFragment {
                 }
             });
 
-            simpleGpu.add(rampThreshold);
+            simpleGpu.addItem(rampThreshold);
         }
 
         if (simpleGpu.size() > 0) {
-            items.add(title);
-            items.addAll(simpleGpu);
+            items.add(simpleGpu);
         }
     }
 
     private void tieredGpuInit(List<RecyclerViewItem> items) {
-        List<RecyclerViewItem> tieredGpu = new ArrayList<>();
-        TitleView title = new TitleView();
-        title.setText(getString(R.string.tiered_gpu_governor));
+        CardView tieredGpu = new CardView(getActivity());
+        tieredGpu.setTitle(getString(R.string.tiered_gpu_governor));
 
         if (TieredGPU.hasTieredGpuEnable()) {
             SwitchView enable = new SwitchView();
@@ -281,7 +278,7 @@ public class GPUFragment extends RecyclerViewFragment {
                 }
             });
 
-            tieredGpu.add(enable);
+            tieredGpu.addItem(enable);
         }
 
         if (TieredGPU.hasTieredEfficiencyModeEnable()) {
@@ -296,7 +293,7 @@ public class GPUFragment extends RecyclerViewFragment {
                 }
             });
 
-            tieredGpu.add(enable);
+            tieredGpu.addItem(enable);
         }
 
         if (TieredGPU.hasTieredGpuSampleTime()) {
@@ -316,19 +313,17 @@ public class GPUFragment extends RecyclerViewFragment {
                 }
             });
 
-            tieredGpu.add(sampleTime);
+            tieredGpu.addItem(sampleTime);
         }
 
         if (tieredGpu.size() > 0) {
-            items.add(title);
-            items.addAll(tieredGpu);
+            items.add(tieredGpu);
         }
     }
 
     private void adrenoIdlerInit(List<RecyclerViewItem> items) {
-        List<RecyclerViewItem> adrenoIdler = new ArrayList<>();
-        TitleView title = new TitleView();
-        title.setText(getString(R.string.adreno_idler));
+        CardView adrenoIdler = new CardView(getActivity());
+        adrenoIdler.setTitle(getString(R.string.adreno_idler));
 
         if (AdrenoIdler.hasAdrenoIdlerEnable()) {
             SwitchView enable = new SwitchView();
@@ -342,7 +337,7 @@ public class GPUFragment extends RecyclerViewFragment {
                 }
             });
 
-            adrenoIdler.add(enable);
+            adrenoIdler.addItem(enable);
         }
 
         if (AdrenoIdler.hasAdrenoIdlerDownDiff()) {
@@ -362,7 +357,7 @@ public class GPUFragment extends RecyclerViewFragment {
                 }
             });
 
-            adrenoIdler.add(downDiff);
+            adrenoIdler.addItem(downDiff);
         }
 
         if (AdrenoIdler.hasAdrenoIdlerIdleWait()) {
@@ -382,7 +377,7 @@ public class GPUFragment extends RecyclerViewFragment {
                 }
             });
 
-            adrenoIdler.add(idleWait);
+            adrenoIdler.addItem(idleWait);
         }
 
         if (AdrenoIdler.hasAdrenoIdlerIdleWorkload()) {
@@ -403,12 +398,11 @@ public class GPUFragment extends RecyclerViewFragment {
                 }
             });
 
-            adrenoIdler.add(idleWorkload);
+            adrenoIdler.addItem(idleWorkload);
         }
 
         if (adrenoIdler.size() > 0) {
-            items.add(title);
-            items.addAll(adrenoIdler);
+            items.add(adrenoIdler);
         }
     }
 
