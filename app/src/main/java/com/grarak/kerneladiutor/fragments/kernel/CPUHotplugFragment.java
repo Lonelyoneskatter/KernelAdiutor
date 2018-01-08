@@ -2182,7 +2182,11 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
 
     private void thunderPlugInit(List<RecyclerViewItem> items) {
         CardView thunderPlug = new CardView(getActivity());
-        thunderPlug.setTitle(getString(R.string.thunderplug));
+        if (ThunderPlug.hasThunderPlugVersion()){
+            thunderPlug.setTitle(ThunderPlug.getThunderPlugVersion());
+        }else {
+            thunderPlug.setTitle(getString(R.string.thunderplug));
+        }
 
         if (ThunderPlug.hasThunderPlugEnable()) {
             SwitchView enable = new SwitchView();
@@ -2198,6 +2202,48 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
 
             thunderPlug.addItem(enable);
             mEnableViews.add(enable);
+        }
+
+        if (ThunderPlug.hasThunderPlugMaxCoreOnline()) {
+            SeekBarView maxCpus = new SeekBarView();
+            maxCpus.setTitle(getString(R.string.max_cpu_online));
+            maxCpus.setSummary(getString(R.string.max_cpu_online_summary));
+            maxCpus.setMax(CPUFreq.getCpuCount());
+            maxCpus.setMin(1);
+            maxCpus.setProgress(ThunderPlug.getThunderPlugMaxCoreOnline() - 1);
+            maxCpus.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    ThunderPlug.setThunderPlugMaxCoreOnline(position + 1, getActivity());
+                }
+            });
+
+            thunderPlug.addItem(maxCpus);
+        }
+
+        if (ThunderPlug.hasThunderPlugMinCoreOnline()) {
+            SeekBarView minCpus = new SeekBarView();
+            minCpus.setTitle(getString(R.string.min_cpu_online));
+            minCpus.setSummary(getString(R.string.min_cpu_online_summary));
+            minCpus.setMax(CPUFreq.getCpuCount());
+            minCpus.setMin(1);
+            minCpus.setProgress(ThunderPlug.getThunderPlugMinCoreOnline() - 1);
+            minCpus.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    ThunderPlug.setThunderPlugMinCoreOnline(position + 1, getActivity());
+                }
+            });
+
+            thunderPlug.addItem(minCpus);
         }
 
         if (ThunderPlug.hasThunderPlugSuspendCpus()) {
@@ -2237,13 +2283,28 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
             thunderPlug.addItem(enduranceLevel);
         }
 
+        if (ThunderPlug.hasThunderPlugSuspend()) {
+            SwitchView suspend = new SwitchView();
+            suspend.setTitle(getString(R.string.suspend));
+            suspend.setSummary(getString(R.string.suspend_summary));
+            suspend.setChecked(ThunderPlug.isThunderPlugSuspendEnabled());
+            suspend.addOnSwitchListener(new SwitchView.OnSwitchListener() {
+                @Override
+                public void onChanged(SwitchView switchView, boolean isChecked) {
+                    ThunderPlug.enableThunderPlugSuspend(isChecked, getActivity());
+                }
+            });
+
+            thunderPlug.addItem(suspend);
+        }
+
         if (ThunderPlug.hasThunderPlugSamplingRate()) {
             SeekBarView samplingRate = new SeekBarView();
             samplingRate.setTitle(getString(R.string.sampling_rate));
-            samplingRate.setMax(2600);
-            samplingRate.setMin(100);
-            samplingRate.setOffset(50);
-            samplingRate.setProgress(ThunderPlug.getThunderPlugSamplingRate() / 50);
+            samplingRate.setMax(500);
+            samplingRate.setMin(10);
+            samplingRate.setOffset(10);
+            samplingRate.setProgress(ThunderPlug.getThunderPlugSamplingRate() / 10 - 1);
             samplingRate.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
                 @Override
                 public void onMove(SeekBarView seekBarView, int position, String value) {
@@ -2251,7 +2312,7 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
 
                 @Override
                 public void onStop(SeekBarView seekBarView, int position, String value) {
-                    ThunderPlug.setThunderPlugSamplingRate(position * 50, getActivity());
+                    ThunderPlug.setThunderPlugSamplingRate((position + 1) * 10, getActivity());
                 }
             });
 
@@ -2278,6 +2339,28 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
             thunderPlug.addItem(loadThreadshold);
         }
 
+        if (ThunderPlug.hasThunderPlugBoostLockDuration()) {
+            SeekBarView boostLockDuration = new SeekBarView();
+            boostLockDuration.setTitle(getString(R.string.boost_lock_duration));
+            boostLockDuration.setSummary(getString(R.string.boost_lock_duration_summary));
+            boostLockDuration.setUnit(getString(R.string.ms));
+            boostLockDuration.setMax(5000);
+            boostLockDuration.setMin(1);
+            boostLockDuration.setProgress(ThunderPlug.getThunderPlugBoostLockDuration() - 1);
+            boostLockDuration.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    ThunderPlug.setThunderPlugBoostLockDuration(position + 1, getActivity());
+                }
+            });
+
+            thunderPlug.addItem(boostLockDuration);
+        }
+
         if (ThunderPlug.hasThunderPlugTouchBoost()) {
             SwitchView touchBoost = new SwitchView();
             touchBoost.setTitle(getString(R.string.touch_boost));
@@ -2293,9 +2376,30 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
             thunderPlug.addItem(touchBoost);
         }
 
+        if (ThunderPlug.hasThunderPlugCpusBoosted()) {
+            SeekBarView cpusBoosted = new SeekBarView();
+            cpusBoosted.setTitle(getString(R.string.cpus_boosted));
+            cpusBoosted.setSummary(getString(R.string.cpus_boosted_summary));
+            cpusBoosted.setMax(CPUFreq.getCpuCount());
+            cpusBoosted.setMin(1);
+            cpusBoosted.setProgress(ThunderPlug.getThunderPlugCpusBoosted() - 1);
+            cpusBoosted.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    ThunderPlug.setThunderPlugLoadCpusBoosted(position + 1, getActivity());
+                }
+            });
+
+            thunderPlug.addItem(cpusBoosted);
+        }
+
         if (thunderPlug.size() > 0) {
             items.add(thunderPlug);
-         }
+        }
     }
 
     private void zenDecisionInit(List<RecyclerViewItem> items) {
