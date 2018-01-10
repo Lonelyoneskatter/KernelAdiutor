@@ -230,27 +230,6 @@ public class MiscFragment extends RecyclerViewFragment {
         CardView ps = new CardView(getActivity());
         ps.setTitle(getString(R.string.power_suspend));
 
-        if (PowerSuspend.hasMode()) {
-            String v = PowerSuspend.getVersion();
-            SelectView mode = new SelectView();
-            mode.setTitle(getString(R.string.power_suspend_mode));
-            mode.setSummary(getString(R.string.power_suspend_mode_summary));
-            if (v.contains("1.5") || v.contains("1.8")) {
-                mode.setItems(Arrays.asList(getResources().getStringArray(R.array.powersuspend_items)));
-            } else {
-                mode.setItems(Arrays.asList(getResources().getStringArray(R.array.powersuspend_items_lite)));
-            }
-            mode.setItem(PowerSuspend.getMode());
-            mode.setOnItemSelected(new SelectView.OnItemSelected() {
-                @Override
-                public void onItemSelected(SelectView selectView, int position, String item) {
-                    PowerSuspend.setMode(position, getActivity());
-                }
-            });
-
-            ps.addItem(mode);
-        }
-
         if (PowerSuspend.hasState()) {
             final SwitchView state = new SwitchView();
             state.setTitle(getString(R.string.power_suspend_state));
@@ -272,6 +251,23 @@ public class MiscFragment extends RecyclerViewFragment {
             });
 
             ps.addItem(state);
+        }
+
+        if (PowerSuspend.hasMode()) {
+            String v = PowerSuspend.getVersion();
+            SelectView mode = new SelectView();
+            mode.setTitle(getString(R.string.power_suspend_mode));
+            mode.setSummary(getString(R.string.power_suspend_mode_summary));
+            mode.setItems(Arrays.asList(getResources().getStringArray(R.array.powersuspend_items)));
+            mode.setItem(PowerSuspend.getMode());
+            mode.setOnItemSelected(new SelectView.OnItemSelected() {
+                @Override
+                public void onItemSelected(SelectView selectView, int position, String item) {
+                    PowerSuspend.setMode(position, getActivity());
+                }
+            });
+
+            ps.addItem(mode);
         }
 
         if (ps.size() > 0) {

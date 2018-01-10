@@ -31,20 +31,21 @@ import com.grarak.kerneladiutor.utils.root.Control;
 public class PowerSuspend {
 
     private static final String PARENT = "/sys/kernel/power_suspend";
+    private static final String ENABLED = "/sys/module/powersuspend/parameters/enabled";
     private static final String MODE = PARENT + "/power_suspend_mode";
     private static final String STATE = PARENT + "/power_suspend_state";
     private static final String VERSION = PARENT + "/power_suspend_version";
 
     public static void enableState(boolean enable, Context context) {
-        run(Control.write(enable ? "1" : "0", STATE), STATE, context);
+        run(Control.write(enable ? "Y" : "N", ENABLED), ENABLED, context);
     }
 
     public static boolean isStateEnabled() {
-        return Utils.readFile(STATE).equals("1");
+        return Utils.readFile(ENABLED).equals("Y");
     }
 
     public static boolean hasState() {
-        return Utils.existFile(STATE);
+        return Utils.existFile(ENABLED);
     }
 
     public static void setMode(int value, Context context) {
