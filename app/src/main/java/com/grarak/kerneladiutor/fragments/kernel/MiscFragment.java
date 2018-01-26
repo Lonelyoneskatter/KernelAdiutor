@@ -276,18 +276,27 @@ public class MiscFragment extends RecyclerViewFragment {
     }
 
     private void stateNotifierInit(List<RecyclerViewItem> items) {
-        SwitchView stateNotifier = new SwitchView();
+        CardView stateNotifier = new CardView(getActivity());
         stateNotifier.setTitle(getString(R.string.state_notifier));
-        stateNotifier.setSummary(getString(StateNotifier.isStateNotifierEnabled() ? R.string.state_notifier_summary_enabled : R.string.state_notifier_summary_disabled));
-        stateNotifier.setChecked(StateNotifier.isStateNotifierEnabled());
-        stateNotifier.addOnSwitchListener(new SwitchView.OnSwitchListener() {
-            @Override
-            public void onChanged(SwitchView switchView, boolean isChecked) {
-                StateNotifier.enableStateNotifier(isChecked, getActivity());
-            }
-        });
 
-        items.add(stateNotifier);
+        if (StateNotifier.hasStateNotifierEnable()) {
+            SwitchView enable = new SwitchView();
+            enable.setTitle(getString(R.string.state_notifier));
+            enable.setSummary(getString(StateNotifier.isStateNotifierEnabled() ? R.string.state_notifier_summary_enabled : R.string.state_notifier_summary_disabled));
+            enable.setChecked(StateNotifier.isStateNotifierEnabled());
+            enable.addOnSwitchListener(new SwitchView.OnSwitchListener() {
+                @Override
+                public void onChanged(SwitchView switchView, boolean isChecked) {
+                    StateNotifier.enableStateNotifier(isChecked, getActivity());
+                }
+            });
+
+            stateNotifier.addItem(enable);
+        }
+
+        if (stateNotifier.size() > 0) {
+            items.add(stateNotifier);
+        }
     }
 
     private void networkInit(List<RecyclerViewItem> items) {
