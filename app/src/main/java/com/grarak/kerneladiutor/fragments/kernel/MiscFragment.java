@@ -211,18 +211,62 @@ public class MiscFragment extends RecyclerViewFragment {
     }
 
     private void dropCachesInit(List<RecyclerViewItem> items) {
-        SwitchView dropCaches = new SwitchView();
+        CardView dropCaches = new CardView(getActivity());
         dropCaches.setTitle(getString(R.string.drop_caches));
-        dropCaches.setSummary(getString(R.string.drop_caches_summary));
-        dropCaches.setChecked(Misc.isDropCachesEnabled());
-        dropCaches.addOnSwitchListener(new SwitchView.OnSwitchListener() {
-            @Override
-            public void onChanged(SwitchView switchView, boolean isChecked) {
-                Misc.enableDropCaches(isChecked, getActivity());
-            }
-        });
 
-        items.add(dropCaches);
+        if (Misc.hasDropCaches()) {
+            SwitchView enable = new SwitchView();
+            enable.setTitle(getString(R.string.drop_caches));
+            enable.setSummary(getString(R.string.drop_caches_summary));
+            enable.setChecked(Misc.isDropCachesEnabled());
+            enable.addOnSwitchListener(new SwitchView.OnSwitchListener() {
+                @Override
+                public void onChanged(SwitchView switchView, boolean isChecked) {
+                    Misc.enableDropCaches(isChecked, getActivity());
+                }
+            });
+
+            dropCaches.addItem(enable);
+        }
+
+        if (Misc.hasDropCachesLoop()) {
+            SwitchView enable = new SwitchView();
+            enable.setTitle(getString(R.string.drop_caches_loop));
+            enable.setSummary(getString(R.string.drop_caches_loop_summary));
+            enable.setChecked(Misc.isDropCachesLoopEnabled());
+            enable.addOnSwitchListener(new SwitchView.OnSwitchListener() {
+                @Override
+                public void onChanged(SwitchView switchView, boolean isChecked) {
+                    StateNotifier.enableStateNotifier(isChecked, getActivity());
+                }
+            });
+
+            dropCaches.addItem(enable);
+        }
+
+        if (Misc.hasDropCachesSecs()) {
+            SeekBarView seconds = new SeekBarView();
+            seconds.setTitle(getString(R.string.drop_caches_seconds));
+            seconds.setSummary(getString(R.string.drop_caches_seconds_summary));
+            seconds.setMax(300);
+            seconds.setProgress(Misc.getDropCachesSecs());
+            seconds.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    Misc.setDropCachesSecs(position, getActivity());
+                }
+            });
+
+            dropCaches.addItem(seconds);
+        }
+
+        if (dropCaches.size() > 0) {
+            items.add(dropCaches);
+        }
     }
 
 

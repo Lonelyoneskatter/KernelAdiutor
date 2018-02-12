@@ -719,6 +719,10 @@
     <string name="arch_power_summary">Enable Arch Specific Power Function/Savings.</string>
     <string name="drop_caches">Drop Caches</string>
     <string name="drop_caches_summary">Toggle screen off ram cleaner. This feature does cause audio issues for a few seconds after screen off. Disabling will stop this, but memory will not be cleared.</string>
+    <string name="drop_caches_loop">Drop Cache Loop</string>
+    <string name="drop_caches_loop_summary">Enabling this will cause cache/RAM to be cleared with the given amount of time (in seconds) while the screen is on over and over again. Settings are applied when screen is turned off and back on.</string>
+    <string name="drop_caches_seconds">Drop Cache Loop Seconds</string>
+    <string name="drop_caches_seconds_summary">The amount of time to wait before the cache/RAM is cleared from the loop (in seconds).</string>
     <string name="power_suspend">Power Suspend</string>
     <string name="power_suspend_state_toast">To change the state manually, activate the Userspace mode</string>
     <string name="power_suspend_mode">Power Suspend Mode</string>

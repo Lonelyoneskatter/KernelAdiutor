@@ -39,6 +39,8 @@ public class Misc {
     private static final String GENTLE_FAIR_SLEEPERS = "/sys/kernel/sched/gentle_fair_sleepers";
     private static final String ARCH_POWER = "/sys/kernel/sched/arch_power";
     private static final String DROP_CACHES = "/sys/module/drop_caches/parameters/drop_caches";
+    private static final String DROP_CACHES_LOOP = "/sys/module/drop_caches/parameters/drop_caches_loop";
+    private static final String DROP_CACHES_SECS = "/sys/module/drop_caches/parameters/drop_caches_seconds";
     private static final String TCP_AVAILABLE_CONGESTIONS = "/proc/sys/net/ipv4/tcp_available_congestion_control";
     private static final String HOSTNAME_KEY = "net.hostname";
 
@@ -105,6 +107,30 @@ public class Misc {
 
     public static boolean hasDropCaches() {
         return Utils.existFile(DROP_CACHES);
+    }
+
+    public static void enableDropCachesLoop(boolean enable, Context context) {
+        run(Control.write(enable ? "Y" : "N", DROP_CACHES_LOOP), DROP_CACHES_LOOP, context);
+    }
+
+    public static boolean isDropCachesLoopEnabled() {
+        return Utils.readFile(DROP_CACHES_LOOP).equals("Y");
+    }
+
+    public static boolean hasDropCachesLoop() {
+        return Utils.existFile(DROP_CACHES_LOOP);
+    }
+
+    public static void setDropCachesSecs(int value, Context context) {
+        run(Control.write(String.valueOf(value * 1), DROP_CACHES_SECS), DROP_CACHES_SECS, context);
+    }
+
+    public static int getDropCachesSecs() {
+        return Utils.strToInt(Utils.readFile(DROP_CACHES_SECS)) / 1;
+    }
+
+    public static boolean hasDropCachesSecs() {
+        return Utils.existFile(DROP_CACHES_SECS);
     }
 
     public static void enableGentleFairSleepers(boolean enable, Context context) {
